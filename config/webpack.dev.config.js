@@ -1,6 +1,8 @@
 const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
+
+const paths = require('./paths')
 const commonConfig = require('./webpack.common.config.js');
 
 const devConfig = {
@@ -11,23 +13,24 @@ const devConfig = {
   entry: {
     app: [
       'react-hot-loader/patch', //适配react保存状态的热更新插件
-      path.join(__dirname, 'src/index.jsx')
+      path.resolve(paths.appSrc, 'index.jsx'),
     ],
   },
 
   /*输出到dist文件夹，输出文件名字为bundle.js*/
   output: {
-    path: path.join(__dirname, './dist'),
+    path: paths.appBuild,
     filename: 'bundle.js',
     chunkFilename: '[name].[chunkhash].js'
   },
 
   devtool: 'inline-source-map', //  开启sourcemap
+  // debug: true,
   //本地运行服务器
   devServer: {
     port: 8080,
     hot: true,
-    contentBase: path.join(__dirname, './dist'),
+    contentBase: path.join(__dirname, paths.appBuild),
     historyApiFallback: true, //每次刷新指向index.js入口文件
     host: '0.0.0.0',
     // open: true// 会自动打开浏览器运行，还可以有port端口参数，默认是8080
